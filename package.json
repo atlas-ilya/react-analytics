@@ -1,6 +1,6 @@
 {
   "name": "english-patient-analytics",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "widget for english-patient",
   "main": "index.js",
   "dependencies": {
