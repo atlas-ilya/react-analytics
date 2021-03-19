@@ -1,3 +1,5 @@
+"use strict"
+
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { sendEvent, sendUser, initialize, admin } from './postEvent'
 import {User} from './user'
