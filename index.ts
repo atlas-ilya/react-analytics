@@ -10,7 +10,7 @@ import Index from "./globals"
 
 
 
-export function identify(user: any): void {
+function identify(user: any): void {
     if (!Index.admin.token) {
         console.error('Call function initialize');
         return;
