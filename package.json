@@ -1,15 +1,13 @@
 {
-  "name": "super-widget-english-patient",
+  "name": "english-patient-analytics",
   "version": "1.0.0",
-  "description": "widget for english patient",
+  "description": "widget for english-patient",
   "main": "index.js",
   "dependencies": {
     "@fingerprintjs/fingerprintjs": "^3.0.6",
     "axios": "^0.21.1"
   },
-  "devDependencies": {
-    "eslint": "^6.0.0"
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,13 +16,13 @@
     "url": "git+https://github.com/atlas-ilya/react-analytics.git"
   },
   "keywords": [
-    "wget",
     "widget",
+    "wget",
+    "analytics",
     "english-patient",
-    "widget-english-patient",
-    "wget-english-patient"
+    "english-patient-analytics"
   ],
-  "author": "Roman Guzaev <rguzaev@gmail.com>",
+  "author": "Roman,Ilya",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/atlas-ilya/react-analytics/issues"
