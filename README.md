@@ -9,38 +9,30 @@ To add our widget to the site, add the initialization of the application itself 
 
 ### Example
 ```js
-    import SuperWidget from "english-patient-analytics"
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import {initialize,identify} from "english-patient-analytics"
 
-    const data = {
-        objectId: "akkOJiYay9",
-        createdAt: "2014-11-06T13:43:17.269Z",
-        updatedAt: "2021-01-31T19:32:25.547Z",
-        email: "User@User.ru",
-        firstName: "User",
-        lastName: "User",
-        mePicSrc: "http://User.jpg",
-        phone: "+798212111212",
-        userPassword: "User",
-        userRole: "student",
-        username: "User@User.ru",
-        wePicSrc: "http://User.jpg",
-        avatar: "https://User.jpg",
-        activated: true,
-        activationCode: "8QDPBQ85I5MW63AFQRKS73SXPZTPZK",
-        distant: true,
-        skype: "User",
-        tags: [],
-        stasiNote: "какие-то заметки",
-        lastActivityTimestamp: 1606814229619,
-        studentIntroductionUrl: "https://s3-eu-west-1.amazonaws.com/indie-wave-files/d5383a1e-3b17-4504-b212-1ba797496bd8",
-        passwordRecoveryKey: "c0fea625-752f-49e5-b018-f6451135de2d",
-        __type: "Object",
-        className: "_User",
-        sessionToken: "r:a943022fdd136d586409fcc959680e8b"
-    }
+const data = {
+  objectId: "6055a40d89b2ab34955bea38",
+  avatar: "https://source.unsplash.com/100x100/?random=3&people",
+  userRole: "teacher",
+  firstName: "Vickie",
+  lastName: "Jones",
+  company: "Isonus",
+  email: "vickiejones@isonus.name",
+  tags: ["incididunt", "ullamco", "minim", "in", "deserunt"],
+};
+initialize("c29a173183fa9df334cae1cb66307baca9de58cd9d8462f0720488d1ea9f2ca6");
+identify(data);
 
-	SuperWidget.initialize("your_token_app");
-    SuperWidget.identify(data);
+    ReactDOM.render(
+        <App />,
+        document.getElementById('root')
+    );
+
+
 
 ```
 
@@ -50,6 +42,8 @@ you must insert your application token into initialization before identification
 ### API initialize
 
 ```js
+    import {initialize} from "english-patient-analytics"
+
     initialize(token: string): void 
 ```
 
@@ -70,6 +64,8 @@ it is possible to insert less voluminous objects into the identification, but th
 ### API identify
 
 ```js
+    import {identify} from "english-patient-analytics"
+
     identify(user: data): void 
 ```
 
@@ -80,6 +76,8 @@ In order to connect the handler to the component you need to insert the track fu
 ### Example
 
 ```js
+    import {track} from "english-patient-analytics"
+    
     <button onClick={() => SuperWidget.track("event_btn")}>Test button</button>
 ```
 
