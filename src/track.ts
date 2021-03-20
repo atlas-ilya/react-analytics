@@ -1,23 +1,25 @@
 
 
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { sendEvent, sendUser, initialize} from './postEvent'
-import {User} from './user'
+import { sendEvent, sendUser, initialize } from './postEvent'
+import { User } from './user'
 import { get_browser } from './getBrowser'
-import Index from "./globals"
+import { admin } from './postEvent'
 
 
+let userEvents: User[] = [];
+let userEvent: any;
+let userParams: any;
 
 
-
-function identify(user: any): void {
-    if (!Index.admin.token) {
+export function identify(user: any): void {
+    if (!admin.token) {
         console.error('Call function initialize');
         return;
     }
-    Index.userEvent = new User();
-    Index.userEvent.userId = user.objectId;
-    Index.userParams = {
+    userEvent = new User();
+    userEvent.userId = user.objectId;
+    userParams = {
         id: user.objectId,
         email: user.email,
         avatar: user.avatar,
@@ -34,12 +36,12 @@ function identify(user: any): void {
         const result = await fp.get();
         return result.visitorId;
     })().then((visitorId) => localStorage.setItem("localKey", JSON.stringify(visitorId)));
-    sendUser(Index.userParams);
+    sendUser(userParams);
 };
 
 
-function track(event: string, options?: object, eventTagsArray?: string[]): void {
-    if (!Index.userEvent) {
+export function track(event: string, options?: object, eventTagsArray?: string[]): void {
+    if (!userEvent) {
         console.error('You need to identify the user, ' +
             'use function widget.identify(user)');
         return;
@@ -52,39 +54,39 @@ function track(event: string, options?: object, eventTagsArray?: string[]): void
         object = newObj;
     }
     if (options) {
-        Index.userEvent.customParams = JSON.stringify(options);
-    } else Index.userEvent.customParams = JSON.stringify({});
+        userEvent.customParams = JSON.stringify(options);
+    } else userEvent.customParams = JSON.stringify({});
 
     if (eventTagsArray) {
-        Index.userEvent.eventTagsArray = JSON.stringify(eventTagsArray);
-    } else Index.userEvent.eventTagsArray = JSON.stringify([]);
+        userEvent.eventTagsArray = JSON.stringify(eventTagsArray);
+    } else userEvent.eventTagsArray = JSON.stringify([]);
 
     const browser = get_browser();
-    Index.userEvent.date = new Date().toISOString();
-    Index.userEvent.eventName = event;
-    Index.userEvent.path = window.location.pathname;
-    Index.userEvent.userBrowserName = browser.name;
-    Index.userEvent.userBrowserVersion = browser.version;
-    Index.userEvent.userDeviceType = browser.device;
-    Index.userEvent.sessionId = object.id;
+    userEvent.date = new Date().toISOString();
+    userEvent.eventName = event;
+    userEvent.path = window.location.pathname;
+    userEvent.userBrowserName = browser.name;
+    userEvent.userBrowserVersion = browser.version;
+    userEvent.userDeviceType = browser.device;
+    userEvent.sessionId = object.id;
 
     let key = JSON.parse("" + localStorage.getItem("localKey"));
-    Index.userEvent.localClientAgent = key;
+    userEvent.localClientAgent = key;
 
 
 
-    if (Index.userEvents.length < 4) {
-        Index.userEvents.push(Index.userEvent);
+    if (userEvents.length < 4) {
+        userEvents.push(userEvent);
     }
     else {
-        Index.userEvents.push(Index.userEvent);
-        sendEvent(Index.userEvents);
-        Index.userEvents = [];
+        userEvents.push(userEvent);
+        sendEvent(userEvents);
+        userEvents = [];
     }
     setInterval(() => {
-        if (Index.userEvents.length != 0) {
-            sendEvent(Index.userEvents);
-            Index.userEvents = [];
+        if (userEvents.length != 0) {
+            sendEvent(userEvents);
+            userEvents = [];
         }
 
     }, 5000);
