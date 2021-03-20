@@ -9,17 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.track = exports.identify = void 0;
+exports.track = exports.identify = exports.initialize = exports.admin = exports.Admin = void 0;
 const fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
 const postEvent_1 = require("./postEvent");
 const user_1 = require("./user");
 const getBrowser_1 = require("./getBrowser");
-const postEvent_2 = require("./postEvent");
 let userEvents = [];
 let userEvent;
 let userParams;
+class Admin {
+    constructor(token) {
+        this.token = token;
+    }
+}
+exports.Admin = Admin;
+function initialize(token) {
+    exports.admin = new Admin(token);
+}
+exports.initialize = initialize;
 function identify(user) {
-    if (!postEvent_2.admin.token) {
+    if (!exports.admin.token) {
         console.error('Call function initialize');
         return;
     }
@@ -95,7 +104,7 @@ function track(event, options, eventTagsArray) {
 exports.track = track;
 ;
 exports.default = {
-    initialize: postEvent_1.initialize,
+    initialize,
     track,
     identify
 };

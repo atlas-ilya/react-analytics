@@ -1,21 +1,10 @@
 import {User} from './user'
 import axios from "axios";
+import { admin } from './track'
 
 
-export class Admin {
-    token: string;
 
-    constructor(token: string) {
 
-        this.token = token;
-    }
-}
-
-export  let admin: any;
-
-export function initialize(token: string): void {
-    admin = new Admin(token);
-}
 
 export function sendUser(event:object){
     axios.post('/patient_user', event, {

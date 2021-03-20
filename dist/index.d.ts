@@ -1,2 +1,1 @@
-export { identify, track } from './track';
-export { initialize } from './postEvent';
+export { identify, track, initialize } from './track';

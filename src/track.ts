@@ -1,16 +1,29 @@
 
 
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { sendEvent, sendUser, initialize } from './postEvent'
+import { sendEvent, sendUser} from './postEvent'
 import { User } from './user'
 import { get_browser } from './getBrowser'
-import { admin } from './postEvent'
+
 
 
 let userEvents: User[] = [];
 let userEvent: any;
 let userParams: any;
 
+export class Admin {
+    token: string;
+
+    constructor(token: string) {
+
+        this.token = token;
+    }
+}
+export let admin: any;
+
+export function initialize(token: string): void {
+    admin = new Admin(token);
+}
 
 export function identify(user: any): void {
     if (!admin.token) {
