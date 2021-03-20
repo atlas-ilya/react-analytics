@@ -45,12 +45,12 @@ function identify(user) {
     };
     const object = { id: "" + Math.random().toString(36).substr(2, 9), timestamp: new Date().getTime() };
     localStorage.setItem("SessionId", JSON.stringify(object));
+    postEvent_1.sendUser(userParams);
     (() => __awaiter(this, void 0, void 0, function* () {
         const fp = yield fingerprintjs_1.default.load();
         const result = yield fp.get();
         return result.visitorId;
     }))().then((visitorId) => localStorage.setItem("localKey", JSON.stringify(visitorId)));
-    postEvent_1.sendUser(userParams);
 }
 exports.identify = identify;
 ;

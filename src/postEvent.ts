@@ -6,8 +6,8 @@ import { admin } from './track'
 
 
 
-export function sendUser(event:object){
-    axios.post('/patient_user', event, {
+export async function sendUser(event:object){
+    await axios.post('/patient_user', event, {
         baseURL: 'https://api.tsu-examples.sabir.pro/api',
         headers: { Authorization: "bearer " + admin.token }
     })

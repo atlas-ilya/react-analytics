@@ -43,13 +43,13 @@ export function identify(user: any): void {
     }
     const object = { id: "" + Math.random().toString(36).substr(2, 9), timestamp: new Date().getTime() }
     localStorage.setItem("SessionId", JSON.stringify(object));
-
+    sendUser(userParams);
     (async () => {
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         return result.visitorId;
     })().then((visitorId) => localStorage.setItem("localKey", JSON.stringify(visitorId)));
-    sendUser(userParams);
+    
 };
 
 
