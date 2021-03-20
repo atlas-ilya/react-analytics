@@ -77,8 +77,8 @@ In order to connect the handler to the component you need to insert the track fu
 
 ```js
     import {track} from "english-patient-analytics"
-    
-    <button onClick={() => SuperWidget.track("event_btn")}>Test button</button>
+
+    <button onClick={() => track("event_btn")}>Test button</button>
 ```
 
 ### API track
