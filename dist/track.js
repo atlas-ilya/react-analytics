@@ -9,22 +9,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.track = exports.identify = exports.initialize = exports.admin = exports.Admin = void 0;
+exports.sendEvent = exports.sendUser = exports.track = exports.identify = exports.initialize = exports.userParams = exports.userEvent = exports.userEvents = exports.admin = exports.User = exports.Admin = void 0;
 const fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
-const postEvent_1 = require("./postEvent");
-const user_1 = require("./user");
 const getBrowser_1 = require("./getBrowser");
-let userEvents = [];
-let userEvent;
-let userParams;
+const axios_1 = require("axios");
 class Admin {
     constructor(token) {
         this.token = token;
     }
 }
 exports.Admin = Admin;
+class User {
+    constructor(userId) {
+        this.eventName = '';
+        this.customParams = {};
+        this.eventTagsArray = '';
+        this.path = '';
+        this.date = '';
+        this.userBrowserName = '';
+        this.userBrowserVersion = '';
+        this.userDeviceType = '';
+        this.sessionId = '';
+        this.localClientAgent = '';
+        this.userId = userId;
+    }
+}
+exports.User = User;
 function initialize(token) {
     exports.admin = new Admin(token);
+    exports.userEvents = [];
 }
 exports.initialize = initialize;
 function identify(user) {
@@ -32,9 +45,8 @@ function identify(user) {
         console.error('Call function initialize');
         return;
     }
-    userEvent = new user_1.User();
-    userEvent.userId = user.objectId;
-    userParams = {
+    exports.userEvent = new User(user.objectId);
+    exports.userParams = {
         id: user.objectId,
         email: user.email,
         avatar: user.avatar,
@@ -45,7 +57,7 @@ function identify(user) {
     };
     const object = { id: "" + Math.random().toString(36).substr(2, 9), timestamp: new Date().getTime() };
     localStorage.setItem("SessionId", JSON.stringify(object));
-    postEvent_1.sendUser(userParams);
+    sendUser(exports.userParams);
     (() => __awaiter(this, void 0, void 0, function* () {
         const fp = yield fingerprintjs_1.default.load();
         const result = yield fp.get();
@@ -55,7 +67,7 @@ function identify(user) {
 exports.identify = identify;
 ;
 function track(event, options, eventTagsArray) {
-    if (!userEvent) {
+    if (!exports.userEvent) {
         console.error('You need to identify the user, ' +
             'use function widget.identify(user)');
         return;
@@ -67,42 +79,70 @@ function track(event, options, eventTagsArray) {
         object = newObj;
     }
     if (options) {
-        userEvent.customParams = JSON.stringify(options);
+        exports.userEvent.customParams = JSON.stringify(options);
     }
     else
-        userEvent.customParams = JSON.stringify({});
+        exports.userEvent.customParams = JSON.stringify({});
     if (eventTagsArray) {
-        userEvent.eventTagsArray = JSON.stringify(eventTagsArray);
+        exports.userEvent.eventTagsArray = JSON.stringify(eventTagsArray);
     }
     else
-        userEvent.eventTagsArray = JSON.stringify([]);
+        exports.userEvent.eventTagsArray = JSON.stringify([]);
     const browser = getBrowser_1.get_browser();
-    userEvent.date = new Date().toISOString();
-    userEvent.eventName = event;
-    userEvent.path = window.location.pathname;
-    userEvent.userBrowserName = browser.name;
-    userEvent.userBrowserVersion = browser.version;
-    userEvent.userDeviceType = browser.device;
-    userEvent.sessionId = object.id;
+    exports.userEvent.date = new Date().toISOString();
+    exports.userEvent.eventName = event;
+    exports.userEvent.path = window.location.pathname;
+    exports.userEvent.userBrowserName = browser.name;
+    exports.userEvent.userBrowserVersion = browser.version;
+    exports.userEvent.userDeviceType = browser.device;
+    exports.userEvent.sessionId = object.id;
     let key = JSON.parse("" + localStorage.getItem("localKey"));
-    userEvent.localClientAgent = key;
-    if (userEvents.length < 4) {
-        userEvents.push(userEvent);
+    exports.userEvent.localClientAgent = key;
+    if (exports.userEvents.length < 5) {
+        let User1 = new User(exports.userEvent.userId);
+        User1.date = exports.userEvent.date;
+        User1.eventName = exports.userEvent.eventName;
+        User1.path = exports.userEvent.path;
+        User1.userBrowserName = exports.userEvent.userBrowserName;
+        User1.userBrowserVersion = exports.userEvent.userBrowserVersion;
+        User1.userDeviceType = exports.userEvent.userDeviceType;
+        User1.sessionId = exports.userEvent.sessionId;
+        User1.localClientAgent = exports.userEvent.localClientAgent;
+        User1.eventTagsArray = exports.userEvent.eventTagsArray;
+        User1.customParams = exports.userEvent.customParams;
+        exports.userEvents.push(User1);
     }
     else {
-        userEvents.push(userEvent);
-        postEvent_1.sendEvent(userEvents);
-        userEvents = [];
+        sendEvent();
+        exports.userEvents = [];
     }
     setInterval(() => {
-        if (userEvents.length != 0) {
-            postEvent_1.sendEvent(userEvents);
-            userEvents = [];
+        if (exports.userEvents.length != 0) {
+            sendEvent();
+            exports.userEvents = [];
         }
     }, 5000);
 }
 exports.track = track;
 ;
+function sendUser(event) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield axios_1.default.post('/patient_user', event, {
+            baseURL: 'https://api.tsu-examples.sabir.pro/api',
+            headers: { Authorization: "bearer " + exports.admin.token }
+        });
+    });
+}
+exports.sendUser = sendUser;
+function sendEvent() {
+    exports.userEvents.map((event) => {
+        axios_1.default.post('/event', event, {
+            baseURL: 'https://api.tsu-examples.sabir.pro/api',
+            headers: { Authorization: "bearer " + exports.admin.token }
+        });
+    });
+}
+exports.sendEvent = sendEvent;
 exports.default = {
     initialize,
     track,

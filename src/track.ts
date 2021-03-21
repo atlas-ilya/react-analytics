@@ -1,28 +1,47 @@
 
-
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { sendEvent, sendUser} from './postEvent'
-import { User } from './user'
 import { get_browser } from './getBrowser'
-
-
-
-let userEvents: User[] = [];
-let userEvent: any;
-let userParams: any;
+import axios from "axios";
 
 export class Admin {
     token: string;
 
     constructor(token: string) {
-
         this.token = token;
     }
+
 }
-export let admin: any;
+
+
+
+
+export class User {
+    userId: string | null;
+    eventName: string = '';
+    customParams: {} = {};
+    eventTagsArray: string = '';
+    path: string = '';
+    date: string = '';
+    userBrowserName: string = '';
+    userBrowserVersion: string = '';
+    userDeviceType: string = '';
+    sessionId: string = '';
+    localClientAgent: string = '';
+    constructor(userId: string) {
+        this.userId = userId;
+    }
+}
+
+export var admin: Admin;
+export var userEvents: User[];
+export let userEvent: User;
+export var userParams: any;
+
+
 
 export function initialize(token: string): void {
     admin = new Admin(token);
+    userEvents = [];
 }
 
 export function identify(user: any): void {
@@ -30,8 +49,7 @@ export function identify(user: any): void {
         console.error('Call function initialize');
         return;
     }
-    userEvent = new User();
-    userEvent.userId = user.objectId;
+    userEvent = new User(user.objectId);
     userParams = {
         id: user.objectId,
         email: user.email,
@@ -49,7 +67,7 @@ export function identify(user: any): void {
         const result = await fp.get();
         return result.visitorId;
     })().then((visitorId) => localStorage.setItem("localKey", JSON.stringify(visitorId)));
-    
+
 };
 
 
@@ -88,24 +106,48 @@ export function track(event: string, options?: object, eventTagsArray?: string[]
 
 
 
-    if (userEvents.length < 4) {
-        userEvents.push(userEvent);
+    if (userEvents.length < 5) {
+        let User1: User = new User(userEvent.userId);
+        User1.date = userEvent.date;
+        User1.eventName = userEvent.eventName;
+        User1.path = userEvent.path;
+        User1.userBrowserName = userEvent.userBrowserName;
+        User1.userBrowserVersion = userEvent.userBrowserVersion;
+        User1.userDeviceType = userEvent.userDeviceType;
+        User1.sessionId = userEvent.sessionId;
+        User1.localClientAgent = userEvent.localClientAgent;
+        User1.eventTagsArray = userEvent.eventTagsArray;
+        User1.customParams = userEvent.customParams;
+        userEvents.push(User1);
     }
     else {
-        userEvents.push(userEvent);
-        sendEvent(userEvents);
+        sendEvent();
         userEvents = [];
     }
     setInterval(() => {
         if (userEvents.length != 0) {
-            sendEvent(userEvents);
+            sendEvent();
             userEvents = [];
         }
 
     }, 5000);
 };
 
+export async function sendUser(event: object) {
+    await axios.post('/patient_user', event, {
+        baseURL: 'https://api.tsu-examples.sabir.pro/api',
+        headers: { Authorization: "bearer " + admin.token }
+    })
+}
 
+export function sendEvent() {
+    userEvents.map((event) => {
+        axios.post('/event', event, {
+            baseURL: 'https://api.tsu-examples.sabir.pro/api',
+            headers: { Authorization: "bearer " + admin.token }
+        })
+    })
+}
 
 
 export default {
