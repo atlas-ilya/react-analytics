@@ -1,6 +1,6 @@
 {
   "name": "english-patient-analytics",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "widget for english-patient",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
