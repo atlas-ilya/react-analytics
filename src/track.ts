@@ -140,8 +140,8 @@ export async function sendUser(event: object) {
     })
 }
 
-export function sendEvent() {
-    userEvents.map((event) => {
+export async function sendEvent() {
+    await userEvents.map((event) => {
         axios.post('/event', event, {
             baseURL: 'https://api.tsu-examples.sabir.pro/api',
             headers: { Authorization: "bearer " + admin.token }

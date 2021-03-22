@@ -24,7 +24,7 @@ export declare function initialize(token: string): void;
 export declare function identify(user: any): void;
 export declare function track(event: string, options?: object, eventTagsArray?: string[]): void;
 export declare function sendUser(event: object): Promise<void>;
-export declare function sendEvent(): void;
+export declare function sendEvent(): Promise<void>;
 declare const _default: {
     initialize: typeof initialize;
     track: typeof track;

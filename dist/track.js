@@ -135,10 +135,12 @@ function sendUser(event) {
 }
 exports.sendUser = sendUser;
 function sendEvent() {
-    exports.userEvents.map((event) => {
-        axios_1.default.post('/event', event, {
-            baseURL: 'https://api.tsu-examples.sabir.pro/api',
-            headers: { Authorization: "bearer " + exports.admin.token }
+    return __awaiter(this, void 0, void 0, function* () {
+        yield exports.userEvents.map((event) => {
+            axios_1.default.post('/event', event, {
+                baseURL: 'https://api.tsu-examples.sabir.pro/api',
+                headers: { Authorization: "bearer " + exports.admin.token }
+            });
         });
     });
 }
