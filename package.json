@@ -1,6 +1,6 @@
 {
   "name": "english-patient-analytics",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "widget for english-patient",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -28,10 +28,7 @@
     "start": "tsc && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/atlas-ilya/react-analytics.git"
-  },
+  "repository": "git+https://github.com/atlas-ilya/react-analytics.git",
   "keywords": [
     "widget",
     "wget",
