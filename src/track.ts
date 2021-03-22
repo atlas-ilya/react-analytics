@@ -120,6 +120,7 @@ export function track(event: string, options?: object, eventTagsArray?: string[]
         userEvents.push(User1);
     }
     else {
+        userEvents.push(User1);
         sendEvent();
         userEvents = [];
     }

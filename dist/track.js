@@ -113,6 +113,7 @@ function track(event, options, eventTagsArray) {
         exports.userEvents.push(User1);
     }
     else {
+        exports.userEvents.push(User1);
         sendEvent();
         exports.userEvents = [];
     }
