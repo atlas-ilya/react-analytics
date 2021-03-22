@@ -98,18 +98,18 @@ function track(event, options, eventTagsArray) {
     exports.userEvent.sessionId = object.id;
     let key = JSON.parse("" + localStorage.getItem("localKey"));
     exports.userEvent.localClientAgent = key;
+    let User1 = new User(exports.userEvent.userId);
+    User1.date = exports.userEvent.date;
+    User1.eventName = exports.userEvent.eventName;
+    User1.path = exports.userEvent.path;
+    User1.userBrowserName = exports.userEvent.userBrowserName;
+    User1.userBrowserVersion = exports.userEvent.userBrowserVersion;
+    User1.userDeviceType = exports.userEvent.userDeviceType;
+    User1.sessionId = exports.userEvent.sessionId;
+    User1.localClientAgent = exports.userEvent.localClientAgent;
+    User1.eventTagsArray = exports.userEvent.eventTagsArray;
+    User1.customParams = exports.userEvent.customParams;
     if (exports.userEvents.length < 5) {
-        let User1 = new User(exports.userEvent.userId);
-        User1.date = exports.userEvent.date;
-        User1.eventName = exports.userEvent.eventName;
-        User1.path = exports.userEvent.path;
-        User1.userBrowserName = exports.userEvent.userBrowserName;
-        User1.userBrowserVersion = exports.userEvent.userBrowserVersion;
-        User1.userDeviceType = exports.userEvent.userDeviceType;
-        User1.sessionId = exports.userEvent.sessionId;
-        User1.localClientAgent = exports.userEvent.localClientAgent;
-        User1.eventTagsArray = exports.userEvent.eventTagsArray;
-        User1.customParams = exports.userEvent.customParams;
         exports.userEvents.push(User1);
     }
     else {
