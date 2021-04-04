@@ -14,8 +14,9 @@ const fingerprintjs_1 = require("@fingerprintjs/fingerprintjs");
 const getBrowser_1 = require("./getBrowser");
 const axios_1 = require("axios");
 class Admin {
-    constructor(token) {
+    constructor(token, baseURL) {
         this.token = token;
+        this.baseURL = baseURL;
     }
 }
 exports.Admin = Admin;
@@ -35,8 +36,8 @@ class User {
     }
 }
 exports.User = User;
-function initialize(token) {
-    exports.admin = new Admin(token);
+function initialize(token, BaseURL) {
+    exports.admin = new Admin(token, BaseURL);
     exports.userEvents = [];
 }
 exports.initialize = initialize;
@@ -129,7 +130,7 @@ exports.track = track;
 function sendUser(event) {
     return __awaiter(this, void 0, void 0, function* () {
         yield axios_1.default.post('/patient_user', event, {
-            baseURL: 'https://api.tsu-examples.sabir.pro/api',
+            baseURL: exports.admin.baseURL,
             headers: { Authorization: "bearer " + exports.admin.token }
         });
     });
@@ -139,7 +140,7 @@ function sendEvent() {
     return __awaiter(this, void 0, void 0, function* () {
         yield exports.userEvents.map((event) => {
             axios_1.default.post('/event', event, {
-                baseURL: 'https://api.tsu-examples.sabir.pro/api',
+                baseURL: exports.admin.baseURL,
                 headers: { Authorization: "bearer " + exports.admin.token }
             });
         });
