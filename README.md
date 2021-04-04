@@ -6,7 +6,7 @@
 
 ## Install to yarn
 
-### `yarn install english-patient-analytics`
+### `yarn add english-patient-analytics`
 
 ## Connect to app
 To add our widget to the site, add the initialization of the application itself + identification of the user who entered the application
