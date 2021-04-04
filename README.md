@@ -28,7 +28,7 @@ const data = {
   email: "vickiejones@isonus.name",
   tags: ["incididunt", "ullamco", "minim", "in", "deserunt"],
 };
-initialize("c29a173183fa9df334cae1cb66307baca9de58cd9d8462f0720488d1ea9f2ca6");
+initialize("c29a173183fa9df334cae1cb66307baca9de58cd9d8462f0720488d1ea9f2ca6",'https://api.tsu-examples.sabir.pro/api');
 identify(data);
 
     ReactDOM.render(
@@ -41,14 +41,14 @@ identify(data);
 ```
 
 ### initialize
-you must insert your application token into initialization before identification
+you must insert your application token and  baseURL your web app into initialization before identification
 
 ### API initialize
 
 ```js
     import {initialize} from "english-patient-analytics"
 
-    initialize(token: string): void 
+    initialize(token: string, baseURL:string): void 
 ```
 
 

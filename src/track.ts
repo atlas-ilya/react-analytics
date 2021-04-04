@@ -5,9 +5,11 @@ import axios from "axios";
 
 export class Admin {
     token: string;
+    baseURL:string;
 
-    constructor(token: string) {
+    constructor(token: string,baseURL:string) {
         this.token = token;
+        this.baseURL = baseURL;
     }
 
 }
@@ -39,8 +41,8 @@ export var userParams: any;
 
 
 
-export function initialize(token: string): void {
-    admin = new Admin(token);
+export function initialize(token: string,BaseURL : string): void {
+    admin = new Admin(token,BaseURL);
     userEvents = [];
 }
 
@@ -135,7 +137,7 @@ export function track(event: string, options?: object, eventTagsArray?: string[]
 
 export async function sendUser(event: object) {
     await axios.post('/patient_user', event, {
-        baseURL: 'https://api.tsu-examples.sabir.pro/api',
+        baseURL: admin.baseURL,
         headers: { Authorization: "bearer " + admin.token }
     })
 }
@@ -143,7 +145,7 @@ export async function sendUser(event: object) {
 export async function sendEvent() {
     await userEvents.map((event) => {
         axios.post('/event', event, {
-            baseURL: 'https://api.tsu-examples.sabir.pro/api',
+            baseURL: admin.baseURL,
             headers: { Authorization: "bearer " + admin.token }
         })
     })
